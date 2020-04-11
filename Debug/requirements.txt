@@ -1,0 +1,3 @@
+nltk
+random
+google-api-core
