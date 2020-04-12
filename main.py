@@ -5,7 +5,7 @@ import re
 import urllib.request
 from pytube import YouTube
 
-api_key="AIzaSyDugJ3NMj9r6GOes-_NBkTKzyILLpkrr4A"
+api_key=""
 video_id=""
 url= f"https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_id}&key={api_key}"
 
