@@ -3,12 +3,27 @@ import random
 import json
 import re
 import urllib.request
-from pytube import YouTube
+import googleapiclient.discovery
+import googleapiclient.errors
+from nltk.corpus import movie_reviews
+import random
+import sys
+All_Comments = []
+x = sys.argv[1]
+PositiveComments = nltk.FreqDist(w.lower() for w in All_Comments)
+word_feature = list(PositiveComments)[:2000]
 
-api_key=""
-video_id=""
-url= f"https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_id}&key={api_key}"
 
-json_url =urllib.request.urlopen(url)
-data=json.loads(json_url.read())
-print(data)
+def document_features(document):
+    document_words = set(document)
+    features = {}
+    for word in word_feature:
+        features['contains ({})'.format(word)] = (word in document_words)
+        return features
+
+
+featuresets = [(document_features(d), c) for (d,c) in All_Comments]
+train_set, test_set = featuresets[100:], featuresets[:100]
+classifier = nltk.NaiveBayesClassifier.train(train_set)
+print(nltk.classify.accuracy(classifier, test_set))
+classifier.show_most_informative_features(5)
